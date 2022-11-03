@@ -1,5 +1,6 @@
 package CRUD;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,6 +10,7 @@ public class main {
 
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
+		ArrayList<Armazem> listaArmazem = new ArrayList<Armazem>();
 		int escolha = 0;
 
 		System.out.println("Bem-Vindo ao sistema de gerenciamento de armazens 'SeeHard' ");
@@ -24,8 +26,14 @@ public class main {
 			case 1:
 				List<Produto> produtos = Armazem.listaDeProdutos();
 				Armazem armazem = new Armazem("Armazem Real", "Rua Tancredo Neves", "1322", 1000, produtos);
+				listaArmazem.add(armazem);
 				armazem.imprimirDados();
 				break;
+			case 2:
+				for (Armazem armazemLista : listaArmazem) {
+					armazemLista.imprimirDados();
+				}
+					break;
 			default:
 				break;
 			}

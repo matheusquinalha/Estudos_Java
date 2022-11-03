@@ -24,6 +24,14 @@ public class Armazem implements ControleEstoque {
 
 	}
 
+	public Armazem(Armazem temp) {
+		this.nome = temp.nome;
+		this.endereco = temp.endereco;
+		this.num_endereco = temp.num_endereco;
+		this.capacidade = temp.capacidade ;
+		this.listaProdutos = temp.listaProdutos;
+	}
+
 	// Gets e Sets
 	public String getNome() {
 		return nome;
@@ -65,14 +73,17 @@ public class Armazem implements ControleEstoque {
 		this.listaProdutos = listaProdutos;
 	}
 
-	// Metodo
+	// Metodo	
 	public void imprimirDados() {
+		System.out.println("------Armazem------");
 		System.out.println("Nome: " + this.nome);
 		System.out.println("Endereço: " + this.endereco + " - Numero: " + this.num_endereco);
 		System.out.println("Capacidade: " + this.capacidade);
+		System.out.println("------Produtos------");
 		for (Produto produto : this.listaProdutos) {
 			produto.exibirDados();
 		}
+		System.out.println("------------------");
 	}
 
 	public static List<Produto> listaDeProdutos() {
@@ -164,12 +175,6 @@ public class Armazem implements ControleEstoque {
 		return lista;
 	}
 
-	/*
-	 * public void adicionaProdutoEstoque(Produto produto) {
-	 * listaProdutos.add(produto); System.out.println("O produto " +
-	 * produto.getNome() + " foi adicionado com sucesso no armazem"); }
-	 */
-
 	public int tamanhoEstoque() {
 		int quantidadeTotal = 0;
 		for (Produto produto : listaProdutos) {
@@ -214,5 +219,5 @@ public class Armazem implements ControleEstoque {
 
 	public void incrementaEstoque(String nomeProduto) {
 		incrementaEstoque(nomeProduto, 1);
-	}
+	}	
 }
