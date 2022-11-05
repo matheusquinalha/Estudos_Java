@@ -1,5 +1,7 @@
 package CRUD;
 
+import java.util.Random;
+
 public class Fruta extends Produto {
 	private final String tipo;
 	private boolean organico;
@@ -9,6 +11,7 @@ public class Fruta extends Produto {
 		super(nome, preco, qtdEstoque, validade);
 		this.tipo = tipo;
 		this.organico = organico;
+		adicionaCodigoBarras();
 	}
 
 	// Gets
@@ -24,15 +27,12 @@ public class Fruta extends Produto {
 	public void exibirDados() {
 		super.exibirDados();
 		System.out.println("Marca: " + this.tipo);
-		System.out.println("Marca: " + this.organico);
+		System.out.println("Organico: " + this.organico);
 	}
 
-	@Override
-	public String getDadosProduto() {
-		String dadosjson;
-		dadosjson = "{Nome: " + super.getNome() + ",Preço: " + super.getPreco() + ",QuantidadeEstoque: "
-				+ super.getQtdEstoque() + ",Validade: " + super.getValidade() + ",Tipo: " + this.getTipo()
-				+ ",Organico: " + this.getOrganico();
-		return dadosjson;
+	public void adicionaCodigoBarras() {
+		Random r = new Random();
+		int codigo_barras = r.nextInt(999999);
+		super.setCodigo_barras(codigo_barras);
 	}
 }

@@ -3,8 +3,10 @@ package CRUD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Armazem implements ControleEstoque {
+	private int id;
 	private String nome;
 	private String endereco;
 	private String num_endereco;
@@ -12,7 +14,9 @@ public class Armazem implements ControleEstoque {
 	private List<Produto> listaProdutos;
 
 	// Construtor
-	public Armazem(String nome, String endereco, String num_endereco, int capacidade, List<Produto> listaProdutos) {
+	public Armazem(int id, String nome, String endereco, String num_endereco, int capacidade,
+			List<Produto> listaProdutos) {
+		this.id = id;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.num_endereco = num_endereco;
@@ -25,14 +29,23 @@ public class Armazem implements ControleEstoque {
 	}
 
 	public Armazem(Armazem temp) {
+		this.id = temp.id;
 		this.nome = temp.nome;
 		this.endereco = temp.endereco;
 		this.num_endereco = temp.num_endereco;
-		this.capacidade = temp.capacidade ;
+		this.capacidade = temp.capacidade;
 		this.listaProdutos = temp.listaProdutos;
 	}
 
 	// Gets e Sets
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -73,9 +86,10 @@ public class Armazem implements ControleEstoque {
 		this.listaProdutos = listaProdutos;
 	}
 
-	// Metodo	
+	// Metodo
 	public void imprimirDados() {
 		System.out.println("------Armazem------");
+		System.out.println("ID: " + this.id);
 		System.out.println("Nome: " + this.nome);
 		System.out.println("Endereço: " + this.endereco + " - Numero: " + this.num_endereco);
 		System.out.println("Capacidade: " + this.capacidade);
@@ -86,14 +100,13 @@ public class Armazem implements ControleEstoque {
 		System.out.println("------------------");
 	}
 
-	public static List<Produto> listaDeProdutos() {
+	public static List<Produto> adicionarProduto() {
 		ArrayList<Produto> lista = new ArrayList<Produto>();
 		int opcao = 0;
 		String nome;
 		Float preco;
 		int qtdEstoque;
 		String validade;
-
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		while (opcao != 9) {
@@ -138,9 +151,9 @@ public class Armazem implements ControleEstoque {
 				validade = scan.next();
 				System.out.println("Digite o tipo da Fruta: ");
 				tipo = scan.next();
-				System.out.println("Digite se a Fruta é organica ou não(Sim ou Não): ");
+				System.out.println("Digite se a Fruta eh organica ou nao(Sim ou Nao): ");
 				respostaFruta = scan.next();
-				organico = respostaFruta == "Sim" ? true : false;
+				organico = (respostaFruta.toUpperCase().equals("SIM")) ? true : false;
 				Fruta fruta = new Fruta(nome, preco, qtdEstoque, validade, tipo, organico);
 				lista.add(fruta);
 				break;
@@ -159,9 +172,9 @@ public class Armazem implements ControleEstoque {
 				validade = scan.next();
 				System.out.println("Digite a marca: ");
 				marcaIndustrializado = scan.next();
-				System.out.println("Digite se o produto é integral ou não(Sim ou Não): ");
+				System.out.println("Digite se o produto eh integral ou nao(Sim ou Nao): ");
 				respostaIndustrializado = scan.next();
-				integral = respostaIndustrializado == "Sim" ? true : false;
+				integral = (respostaIndustrializado.toUpperCase().equals("SIM")) ? true : false;
 				Industrializado industrializado = new Industrializado(nome, preco, qtdEstoque, validade,
 						marcaIndustrializado, integral);
 				lista.add(industrializado);
@@ -169,55 +182,31 @@ public class Armazem implements ControleEstoque {
 			case 9:
 				break;
 			default:
-				System.out.println("Digite uma opção valida");
+				System.out.println("Digite uma opcao valida");
 			}
 		}
 		return lista;
 	}
 
-	public int tamanhoEstoque() {
-		int quantidadeTotal = 0;
-		for (Produto produto : listaProdutos) {
-			quantidadeTotal += produto.getQtdEstoque();
-		}
-		return quantidadeTotal;
-	}
-
-	public void decrementaEstoque(String nomeProduto, int quantidade) {
-		int quantidadeReduzida;
-		for (Produto produto : listaProdutos) {
-			if (produto.getNome().toUpperCase() == nomeProduto.toUpperCase()) {
-				quantidadeReduzida = produto.getQtdEstoque() - quantidade;
-				if (quantidadeReduzida < 0) {
-					System.out.println("A quantidade do produto não pode ser menor que 0(zero)");
-					return;
-				}
-				produto.setQtdEstoque(quantidadeReduzida);
+	public void removerProduto(List<Produto> list) {
+		String escolha = "";
+		Scanner scan = new Scanner(System.in);
+		
+		System.out.println("Você gostaria de excluir algum item?(Sim ou Não)");
+		escolha = scan.next();
+		while (escolha.toUpperCase() != "SIM") {
+			int cd_barras_escolhido;
+			System.out.println("Digite o código de barras para a exclusão: ");
+			cd_barras_escolhido = scan.nextInt();
+			List<Produto> resultado = list.stream().filter(item -> item.getCodigo_barras() == cd_barras_escolhido)
+					.collect(Collectors.toList());
+			int posicao = list.indexOf(resultado.get(0));
+			if (posicao < 0) {
+				System.out.println("Código de Barras não encontrado!");
 			}
+			list.remove(posicao);
+			System.out.println("Deseja excluir mais um item?");
+			escolha = scan.next();
 		}
 	}
-
-	public void decrementaEstoque(String nomeProduto) {
-		decrementaEstoque(nomeProduto, 1);
-	}
-
-	public void incrementaEstoque(String nomeProduto, int quantidade) {
-		int quantidadeAumentada;
-		int estoqueAtual;
-		for (Produto produto : listaProdutos) {
-			if (produto.getNome().toUpperCase() == nomeProduto.toUpperCase()) {
-				quantidadeAumentada = produto.getQtdEstoque() + quantidade;
-				estoqueAtual = tamanhoEstoque() + quantidadeAumentada;
-				if (estoqueAtual > this.getCapacidade()) {
-					System.out.println("A capacidade do armazem foi atingido");
-					return;
-				}
-				produto.setQtdEstoque(quantidadeAumentada);
-			}
-		}
-	}
-
-	public void incrementaEstoque(String nomeProduto) {
-		incrementaEstoque(nomeProduto, 1);
-	}	
 }

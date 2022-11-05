@@ -1,5 +1,7 @@
 package CRUD;
 
+import java.util.Random;
+
 public class Bebida extends Produto {
 	private final String marca;
 	private Float volume;
@@ -9,6 +11,7 @@ public class Bebida extends Produto {
 		super(nome, preco, qtdEstoque, validade);
 		this.marca = marca;
 		this.volume = volume;
+		adicionaCodigoBarras();
 	}
 
 	// Gets
@@ -27,12 +30,9 @@ public class Bebida extends Produto {
 		System.out.println("Volume: " + this.volume);
 	}
 
-	@Override
-	public String getDadosProduto() {
-		String dadosjson;
-		dadosjson = "{Nome: " + super.getNome() + ",Preço: " + super.getPreco() + ",QuantidadeEstoque: "
-				+ super.getQtdEstoque() + ",Validade: " + super.getValidade() + ",Marca: " + this.getMarca()
-				+ ",Volume: " + this.getVolume();
-		return dadosjson;
+	public void adicionaCodigoBarras() {
+		Random r = new Random();
+		int codigo_barras = r.nextInt(999999);
+		super.setCodigo_barras(codigo_barras);
 	}
 }

@@ -5,6 +5,7 @@ public abstract class Produto {
 	private Float preco;
 	private int qtdEstoque;
 	private String validade;
+	private int codigo_barras;
 
 	// Contrutor
 	public Produto(String nome, Float preco, int qtdEstoque, String validade) {
@@ -51,6 +52,14 @@ public abstract class Produto {
 		this.validade = validade;
 	}
 
+	public int getCodigo_barras() {
+		return codigo_barras;
+	}
+
+	public void setCodigo_barras(int codigo_barras) {
+		this.codigo_barras = codigo_barras;
+	}
+
 	// Metodo
 	public void exibirDados() {
 		System.out.println("Dados:");
@@ -58,7 +67,8 @@ public abstract class Produto {
 		System.out.println("Preço: " + this.preco);
 		System.out.println("Quantidade Estoque: " + this.qtdEstoque);
 		System.out.println("Validade: " + this.validade);
+		System.out.println("Código de Barras: " + this.codigo_barras);
 	}
-
-	public abstract String getDadosProduto();
+	
+	public abstract void adicionaCodigoBarras();
 }

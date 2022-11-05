@@ -1,13 +1,9 @@
 package CRUD;
 
+import java.util.List;
+
 public interface ControleEstoque {
-	public abstract int tamanhoEstoque();
-
-	public abstract void decrementaEstoque(String nomeProduto, int quantidade);
-
-	public abstract void decrementaEstoque(String nomeProduto);
-
-	public abstract void incrementaEstoque(String nomeProduto, int quantidade);
-
-	public abstract void incrementaEstoque(String nomeProduto);
+	public abstract void removerProduto(List<Produto> list);
+	
+	public abstract void imprimirDados();
 }
