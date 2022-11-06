@@ -194,7 +194,7 @@ public class Armazem implements ControleEstoque {
 		
 		System.out.println("Você gostaria de excluir algum item?(Sim ou Não)");
 		escolha = scan.next();
-		while (escolha.toUpperCase() != "SIM") {
+		while (escolha.toUpperCase().equals("SIM")) {
 			int cd_barras_escolhido;
 			System.out.println("Digite o código de barras para a exclusão: ");
 			cd_barras_escolhido = scan.nextInt();

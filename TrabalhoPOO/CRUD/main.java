@@ -29,8 +29,18 @@ public class main {
 			//Cadastrar Armazem
 			case 1:
 				contador += 1;
+				String nome, rua, numero;
+				int capacidade;
+				System.out.println("Digite o nome do Armazem: ");
+				nome = scanner.next();
+				System.out.println("Digite o endereço: ");
+				rua = scanner.next();
+				System.out.println("Digite o número: ");
+				numero = scanner.next();
+				System.out.println("Qual a capacidade de seu estoque?: ");
+				capacidade = scanner.nextInt();
 				List<Produto> produtos = Armazem.adicionarProduto();
-				Armazem armazem = new Armazem(contador, "Armazem Real", "Rua Tancredo Neves", "1322", 1000, produtos);
+				Armazem armazem = new Armazem(contador, nome, rua, numero, capacidade, produtos);
 				listaArmazem.add(armazem);
 				armazem.imprimirDados();
 				break;
@@ -41,10 +51,7 @@ public class main {
 				if (id_escolhido2 > listaArmazem.size()) {
 					System.out.println("Não existe um armazem com esse ID");
 					System.out.println("Voltando para o menu principal....");
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException ex) {
-					}
+					try { Thread.sleep(1000); } catch (InterruptedException ex) {}
 					System.out.println("----------------");
 					break;
 				}
@@ -59,10 +66,7 @@ public class main {
 				if (id_escolhido > listaArmazem.size()) {
 					System.out.println("Não existe um armazem com esse ID");
 					System.out.println("Voltando para o menu principal....");
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException ex) {
-					}
+					try { Thread.sleep(1000); } catch (InterruptedException ex) {}
 					System.out.println("----------------");
 					break;
 				}
