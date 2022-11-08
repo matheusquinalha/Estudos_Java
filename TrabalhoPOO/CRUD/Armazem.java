@@ -88,16 +88,18 @@ public class Armazem implements ControleEstoque {
 
 	// Metodo
 	public void imprimirDados() {
-		System.out.println("------Armazem------");
+		System.out.format("+-----------------------------------------------------+%n");
+		System.out.format("+------------------------Armazem----------------------+%n");
 		System.out.println("ID: " + this.id);
 		System.out.println("Nome: " + this.nome);
 		System.out.println("Endereço: " + this.endereco + " - Numero: " + this.num_endereco);
 		System.out.println("Capacidade: " + this.capacidade);
-		System.out.println("------Produtos------");
+		System.out.format("+-----------------------------------------------------+%n");
+		System.out.format("+------------------------Produtos---------------------+%n");
 		for (Produto produto : this.listaProdutos) {
 			produto.exibirDados();
 		}
-		System.out.println("------------------");
+		System.out.format("+-----------------------------------------------------+%n");
 	}
 
 	public static List<Produto> adicionarProduto() {
@@ -108,12 +110,14 @@ public class Armazem implements ControleEstoque {
 		int qtdEstoque;
 		String validade;
 		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
 		Scanner scan = new Scanner(System.in);
 		while (opcao != 9) {
-			System.out.println("1 - Inserir nova Bebida");
-			System.out.println("2 - Inserir nova Fruta");
-			System.out.println("3 - Inserir novo Produto Industrializado");
-			System.out.println("9 - Sair");
+			System.out.println("[1] - Inserir nova Bebida");
+			System.out.println("[2] - Inserir nova Fruta");
+			System.out.println("[3] - Inserir novo Produto Industrializado");
+			if (!lista.isEmpty())
+				System.out.println("[9] - Sair");
 			opcao = scan.nextInt();
 
 			switch (opcao) {
@@ -122,7 +126,7 @@ public class Armazem implements ControleEstoque {
 				String marcaBebida;
 				Float volume;
 				System.out.println("Digite o nome do produto: ");
-				nome = scan.next();
+				nome = scanner.nextLine();
 				System.out.println("Digite o preço: ");
 				preco = scan.nextFloat();
 				System.out.println("Digita a quantidade de estoque: ");
@@ -130,7 +134,7 @@ public class Armazem implements ControleEstoque {
 				System.out.println("Digite a data de validade: ");
 				validade = scan.next();
 				System.out.println("Digite a marca da bebida: ");
-				marcaBebida = scan.next();
+				marcaBebida = scanner.nextLine();
 				System.out.println("Digite o volume da bebida: ");
 				volume = scan.nextFloat();
 				Bebida bebida = new Bebida(nome, preco, qtdEstoque, validade, marcaBebida, volume);
@@ -142,16 +146,16 @@ public class Armazem implements ControleEstoque {
 				String respostaFruta;
 				Boolean organico;
 				System.out.println("Digite o nome do produto: ");
-				nome = scan.next();
+				nome = scanner.nextLine();
 				System.out.println("Digite o preço: ");
 				preco = scan.nextFloat();
 				System.out.println("Digita a quantidade de estoque: ");
 				qtdEstoque = scan.nextInt();
 				System.out.println("Digite a data de validade: ");
 				validade = scan.next();
-				System.out.println("Digite o tipo da Fruta: ");
-				tipo = scan.next();
-				System.out.println("Digite se a Fruta eh organica ou nao(Sim ou Nao): ");
+				System.out.println("Digite o tipo da fruta: ");
+				tipo =  scanner.nextLine();
+				System.out.println("A fruta é orgânica? (Sim ou Não) ");
 				respostaFruta = scan.next();
 				organico = (respostaFruta.toUpperCase().equals("SIM")) ? true : false;
 				Fruta fruta = new Fruta(nome, preco, qtdEstoque, validade, tipo, organico);
@@ -163,7 +167,7 @@ public class Armazem implements ControleEstoque {
 				String respostaIndustrializado;
 				Boolean integral;
 				System.out.println("Digite o nome do produto: ");
-				nome = scan.next();
+				nome = scanner.nextLine();
 				System.out.println("Digite o preço: ");
 				preco = scan.nextFloat();
 				System.out.println("Digita a quantidade de estoque: ");
@@ -171,18 +175,21 @@ public class Armazem implements ControleEstoque {
 				System.out.println("Digite a data de validade: ");
 				validade = scan.next();
 				System.out.println("Digite a marca: ");
-				marcaIndustrializado = scan.next();
-				System.out.println("Digite se o produto eh integral ou nao(Sim ou Nao): ");
+				marcaIndustrializado = scanner.nextLine();
+				System.out.println("O industrializado é integral? (Sim ou Não) ");
 				respostaIndustrializado = scan.next();
 				integral = (respostaIndustrializado.toUpperCase().equals("SIM")) ? true : false;
 				Industrializado industrializado = new Industrializado(nome, preco, qtdEstoque, validade,
 						marcaIndustrializado, integral);
 				lista.add(industrializado);
 				break;
+				
 			case 9:
 				break;
+				
 			default:
-				System.out.println("Digite uma opcao valida");
+				System.out.println("Digite uma opção válida!");
+				break;
 			}
 		}
 		return lista;
@@ -194,18 +201,26 @@ public class Armazem implements ControleEstoque {
 		
 		System.out.println("Você gostaria de excluir algum item?(Sim ou Não)");
 		escolha = scan.next();
-		while (escolha.toUpperCase().equals("SIM")) {
+		while (escolha.toUpperCase().equals("SIM")) {			
+			if (list.isEmpty()) {
+				System.out.println("A lista de produtos se encontra vazia, voltando para o Menu...");
+				try { Thread.sleep(1000); } catch (InterruptedException ex) {}
+				break;
+			}			
 			int cd_barras_escolhido;
 			System.out.println("Digite o código de barras para a exclusão: ");
 			cd_barras_escolhido = scan.nextInt();
 			List<Produto> resultado = list.stream().filter(item -> item.getCodigo_barras() == cd_barras_escolhido)
-					.collect(Collectors.toList());
-			int posicao = list.indexOf(resultado.get(0));
-			if (posicao < 0) {
+										.collect(Collectors.toList());
+			if (resultado.isEmpty()) {
 				System.out.println("Código de Barras não encontrado!");
+				continue;
 			}
+			int posicao = list.indexOf(resultado.get(0));
 			list.remove(posicao);
-			System.out.println("Deseja excluir mais um item?");
+			System.out.println(resultado.get(0).getNome() + " removido(a) com sucesso!");
+			try { Thread.sleep(1000); } catch (InterruptedException ex) {}
+			System.out.println("Deseja excluir mais um item? (Sim ou Não)");
 			escolha = scan.next();
 		}
 	}
