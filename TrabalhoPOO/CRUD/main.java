@@ -20,6 +20,7 @@ public class main {
 		System.out.format("+-------------------------------------------------------------+%n");
 		System.out.println("\nDigite a opção desejada:");
 		while (escolha != 9) {
+			System.out.println("");
 			System.out.format("+-----------------------------------------------------+%n");
 			System.out.format("| [1] - Cadastrar Armazem                             |%n");
 			System.out.format("| [2] - Cadastrar produto em um armazem existente     |%n");
@@ -75,15 +76,18 @@ public class main {
 					try {Thread.sleep(1000);} catch (InterruptedException ex) {}
 					break;
 				}
+				Armazem.imprimirArmazem(listaArmazem, id_escolhido - 1);
 				Armazem armazemEscolhido = listaArmazem.get(id_escolhido - 1);
-				armazemEscolhido.imprimirDados();
 				armazemEscolhido.removerProduto(armazemEscolhido.getListaProdutos());
 				break;
+				
 			// Consultar todos os dados
 			case 4:
-				for (Armazem armazemLista : listaArmazem) {
-					armazemLista.imprimirDados();
-				}
+				Armazem.imprimirArmazem(listaArmazem);
+				break;
+				
+			//Encerrando switch case	
+			case 9:
 				break;
 				
 			default:

@@ -86,7 +86,16 @@ public class Armazem implements ControleEstoque {
 		this.listaProdutos = listaProdutos;
 	}
 
-	// Metodo
+	// Metodos
+	public static void imprimirArmazem(ArrayList<Armazem> listaArmazem, int armazemEscolhido) {
+		listaArmazem.get(armazemEscolhido).imprimirDados();
+	}
+	
+	public static void imprimirArmazem(ArrayList<Armazem> listaArmazem) {
+		for (Armazem armazemLista : listaArmazem)
+			armazemLista.imprimirDados();
+	}
+	
 	public void imprimirDados() {
 		System.out.format("+-----------------------------------------------------+%n");
 		System.out.format("+------------------------Armazem----------------------+%n");
